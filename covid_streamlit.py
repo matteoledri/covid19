@@ -118,8 +118,6 @@ def load_population_italian_regions(fileName = 'population_ita_regions.csv'):
 def processData(df, referenceCaseNumber=100, group='Country'):
     df = df.groupby(by=[group,'Date']).sum()
 
-    referenceCaseNumber = 100
-
     df['deltaFromRefCases'] = np.abs(df['Confirmed']-referenceCaseNumber)
 
     modGroups = []
@@ -243,9 +241,12 @@ else:
     df = load_protezione_civile_data_italy(addPopulation=True)
     defaultGroups = ['Lombardia', 'Friuli Venezia Giulia', 'Marche', 'Sardegna', 'Emilia Romagna', 'Lazio']
 
+refCasesStr = st.sidebar.text_input('Number of Cases for time offset', '100')
+refCases=float(refCasesStr)
 
 
-data = processData(df, group=groupVar)
+
+data = processData(df, referenceCaseNumber=refCases, group=groupVar)
 availableGroups = list(data[groupVar].unique())
 
 
@@ -262,6 +263,8 @@ else:
 
 figTimeSeries = getLinePlot(selectedData, xVar='timeAfterRefCases', yVars=['Confirmed','ConfirmedPer100k','NewCases','Deaths','Recovered','GrowthRatePercent','DeathRate'], colorVar=groupVar, logY=[True,False,False,True,True,False,False,False])
 
+
+st.sidebar.markdown('Approved by ZuZu')
 
 
 
@@ -283,4 +286,4 @@ figTimeSeries = getLinePlot(selectedData, xVar='timeAfterRefCases', yVars=['Conf
 st.write(figTimeSeries)
 # # Replaces the second empty slot with a chart.
 
-# my_slot1.dataframe(data=dfIta)
+st.dataframe(data=selectedData.groupby(groupVar).last())
