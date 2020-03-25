@@ -10,12 +10,16 @@ def load_protezione_civile_data_italy(addPopulation = False, populationFileName 
 
     df = pd.read_json(fileName)    
     
-    df=df.rename(columns={'lat':'Lat','long':'Long','data':'Date','stato':'Country','denominazione_regione':'State/Region',                          'totale_casi':'Confirmed','deceduti':'Deaths','dimessi_guariti':'Recovered'})
+    df=df.rename(columns={'lat':'Lat','long':'Long','data':'Date','stato':'Country','denominazione_regione':'State/Region','totale_casi':'Confirmed','deceduti':'Deaths','dimessi_guariti':'Recovered'})
     
     df['Date'] = pd.to_datetime(df['Date'], format='%Y-%m-%d %H:%M:%S', utc=True)
     if addPopulation:
         rbdf = load_population_italian_regions(fileName = populationFileName)
         df = df.merge(rbdf, on=['State/Region'])
+    
+    df[['Confirmed','Deaths','Recovered','Population']] = df[['Confirmed','Deaths','Recovered','Population']].apply(pd.to_numeric, errors='ignore')
+
+
     return df
 
 
@@ -66,6 +70,8 @@ def load_who_data_world(addPopulation = False, populationFileName = 'population_
     if addPopulation:
         wbdf = load_population_wb(fileName = populationFileName)
         df = df.merge(wbdf, on=['Country'])
+
+    df[['Confirmed','Deaths','Recovered','Population']] = df[['Confirmed','Deaths','Recovered','Population']].apply(pd.to_numeric, errors='ignore')
 
     return df
 
@@ -244,7 +250,8 @@ else:
 refCasesStr = st.sidebar.text_input('Number of Cases for time offset', '100')
 refCases=float(refCasesStr)
 
-
+# st.text(df.columns.values)
+# st.text(df.groupby(by=[groupVar,'Date']).sum().columns.values)
 
 data = processData(df, referenceCaseNumber=refCases, group=groupVar)
 availableGroups = list(data[groupVar].unique())
@@ -287,3 +294,4 @@ st.write(figTimeSeries)
 # # Replaces the second empty slot with a chart.
 
 st.dataframe(data=selectedData.groupby(groupVar).last())
+st.dataframe(data=selectedData.groupby(groupVar).nth(-2))
