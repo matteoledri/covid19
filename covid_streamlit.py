@@ -4,6 +4,60 @@ import numpy as np
 
 
 ####### Utility methods
+def getStandardNamesDict():
+    nameStandards = {
+        "Mainland China":"China",
+        "US":"USA",
+        "United States":"USA",
+        "United Kingdom":"UK",
+        "England":"UK",
+        "Others":"Diamond Princess",
+        "Cruise Ship":"Diamond Princess",
+        "Czechia":"Czech Republic",
+        "United Arab Emirates":"UAE",
+        "Iran (Islamic Republic of)":"Iran",
+        "Hong Kong SAR":"Hong Kong",
+        "Viet Nam":"Vietnam",
+        "occupied Palestinian territory":"Palestine",
+        "Macao SAR":"Macao",
+        "Russian Federation":"Russia",
+        "Republic of Moldova":"Moldova",
+        "Macedonia":"North Macedonia",
+        "Republic of Serbia":"Serbia",
+        "Saint Vincent and the Grenadines": "St. Vincent Grenadines",
+        "Ivory Coast":"Cote d'Ivoire",
+        "Saint Barthelemy":"St. Barth",
+        "Faroe Islands": "Faeroe Islands",
+        "Faeroe Islands": "Faeroe Islands",
+        "Réunion":"Reunion",
+        "The Gambia":"Gambia",
+        "Central African Republic":"CAR",
+        "Curacao":"Curaçao",
+        "Curaçao":"Curaçao",
+        "Jersey":"Channel Islands",
+        "Guernsey":"Channel Islands",
+        "East Timor":"Timor-Leste",        
+        "Republic of Korea":"South Korea",
+        "S. Korea":"South Korea",
+        "Korea, South":"South Korea",
+        "United Republic of Tanzania":"Tanzania",
+        "Holy See":"Vatican City",
+        "Vatican":"Vatican City",
+        "Holy See (Vatican City State)":"Vatican City",
+        "Taiwan*":"Taiwan",
+        "Taipei and environs":"Taiwan",  
+        "Democratic Republic of Congo":"Congo",
+        "Congo (Kinshasa)":"Congo",
+        "DRC":"Congo",
+        "The Democratic Republic of Congo":"Congo",
+        "Democratic Republic of the Congo":"Congo",    
+        "Congo (Brazzaville)":"Congo (Brazzaville)",
+        "The Bahamas":"Bahamas", 
+        "Bahamas, The":"Bahamas", 
+        "Gambia, The":"Gambia",
+        }
+    return nameStandards
+
 def load_protezione_civile_data_italy(addPopulation = False, populationFileName = 'population_ita_regions.csv'):
 
     fileName = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-regioni.json'
@@ -24,9 +78,19 @@ def load_protezione_civile_data_italy(addPopulation = False, populationFileName 
 
 
 def load_who_data_world(addPopulation = False, populationFileName = 'population_world_countries.csv'):
-    confirmed = pd.read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv",keep_default_na=False)
-    deaths = pd.read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv",keep_default_na=False)
-    recovered = pd.read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv",keep_default_na=False)
+    # confirmed = pd.read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv",keep_default_na=False)
+    # deaths = pd.read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv",keep_default_na=False)
+    # recovered = pd.read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv",keep_default_na=False)
+
+    # confirmed = pd.read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv",keep_default_na=False)
+    # deaths = pd.read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv",keep_default_na=False)
+    
+
+    #alternative repository
+    confirmed = pd.read_csv("https://raw.githubusercontent.com/bumbeishvili/covid19-daily-data/master/time_series_19-covid-Confirmed.csv",keep_default_na=False)
+    deaths = pd.read_csv("https://raw.githubusercontent.com/bumbeishvili/covid19-daily-data/master/time_series_19-covid-Deaths.csv",keep_default_na=False)
+    recovered = pd.read_csv("https://raw.githubusercontent.com/bumbeishvili/covid19-daily-data/master/time_series_19-covid-Recovered.csv",keep_default_na=False)
+
 
     confirmed["Case_Type"] = "Confirmed"
     deaths["Case_Type"] = "Deaths"
@@ -71,6 +135,9 @@ def load_who_data_world(addPopulation = False, populationFileName = 'population_
         wbdf = load_population_wb(fileName = populationFileName)
         df = df.merge(wbdf, on=['Country'])
 
+    standardNamesDict = getStandardNamesDict()
+    df = df.replace({"Country": standardNamesDict})
+
     df[['Confirmed','Deaths','Recovered','Population']] = df[['Confirmed','Deaths','Recovered','Population']].apply(pd.to_numeric, errors='ignore')
 
     return df
@@ -106,6 +173,10 @@ def load_population_wb(fileName = 'population_world_countries.csv'):
           'Population':[3700, 395700, 63026, 800, 106800, 376480, 859959, 23780452]})
 
         wbdf = wbdf.append(noDataCountries).sort_values(by=['Country']).reset_index(drop=True)
+
+        standardNamesDict = getStandardNamesDict()
+        wbdf = wbdf.replace({"Country": standardNamesDict})
+
         
         if fileName:
             wbdf.to_csv(fileName, index=False)
@@ -121,8 +192,21 @@ def load_population_italian_regions(fileName = 'population_ita_regions.csv'):
         print('The population file',fileName,'does not exist')
         return None
 
+def getAggregationDict():
+    aggregation = {
+    'Confirmed': pd.NamedAgg(column='Confirmed', aggfunc='sum'),
+    'Deaths': pd.NamedAgg(column='Deaths', aggfunc='sum'),
+    'Recovered': pd.NamedAgg(column='Recovered', aggfunc='sum'),
+    'Population': pd.NamedAgg(column='Population', aggfunc='mean'),
+    'Lat': pd.NamedAgg(column='Lat', aggfunc='mean'),
+    'Long': pd.NamedAgg(column='Long', aggfunc='mean'),
+    }
+    return aggregation
+
 def processData(df, referenceCaseNumber=100, group='Country'):
-    df = df.groupby(by=[group,'Date']).sum()
+    
+    aggregation=getAggregationDict()
+    df = df.groupby(by=[group,'Date']).agg(**aggregation)
 
     df['deltaFromRefCases'] = np.abs(df['Confirmed']-referenceCaseNumber)
 
@@ -241,7 +325,7 @@ itaWorldRadio = st.sidebar.radio(
 if itaWorldRadio=='World':
     groupVar='Country'
     df = load_who_data_world(addPopulation= True)
-    defaultGroups = ['Italy','Spain','France','Germany','US','United Kingdom', 'New Zealand', 'China', 'Japan', 'Korea, South']
+    defaultGroups = ['Italy','Spain','France','Germany','USA','UK', 'New Zealand', 'China', 'Japan', 'South Korea']
 else:
     groupVar='State/Region'
     df = load_protezione_civile_data_italy(addPopulation=True)
@@ -256,6 +340,13 @@ refCases=float(refCasesStr)
 data = processData(df, referenceCaseNumber=refCases, group=groupVar)
 availableGroups = list(data[groupVar].unique())
 
+
+# st.text(defaultGroups)
+# st.text(availableGroups)
+
+# for gg in defaultGroups:
+#     if gg in availableGroups:
+#         st.text(gg)
 
 selectedGroups = st.sidebar.multiselect(
     label='Select '+groupVar,
@@ -295,3 +386,9 @@ st.write(figTimeSeries)
 
 st.dataframe(data=selectedData.groupby(groupVar).last())
 st.dataframe(data=selectedData.groupby(groupVar).nth(-2))
+
+
+##TODO  make a table with totals that works
+# aggregation = getAggregationDict()
+# st.dataframe(data=data.groupby(groupVar).last().agg(func=aggregation))
+# st.dataframe(data=data.groupby(groupVar).nth(-2).agg(func=aggregation))

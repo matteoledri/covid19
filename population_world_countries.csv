@@ -13,7 +13,7 @@ Aruba,105845.0
 Australia,24992369.0
 Austria,8847037.0
 Azerbaijan,9942334.0
-"Bahamas, The",385640.0
+Bahamas,385640.0
 Bahrain,1569439.0
 Bangladesh,161356039.0
 Barbados,286641.0
@@ -38,7 +38,7 @@ Cameroon,25216237.0
 Canada,37058856.0
 Caribbean small states,7358965.0
 Cayman Islands,15480.0
-Central African Republic,4666377.0
+CAR,4666377.0
 Central Europe and the Baltics,102511922.0
 Chad,15477751.0
 Channel Islands,170499.0
@@ -47,15 +47,15 @@ China,1392730000.0
 Colombia,49648685.0
 Comoros,832322.0
 Congo (Brazzaville),5244363.0
-Congo (Kinshasa),84068091.0
+Congo,84068091.0
 Costa Rica,4999441.0
 Cote d'Ivoire,25069229.0
 Croatia,4089400.0
-Cruise Ship,3700.0
+Diamond Princess,3700.0
 Cuba,11338138.0
-Curacao,159849.0
+Curaçao,159849.0
 Cyprus,1189265.0
-Czechia,10625695.0
+Czech Republic,10625695.0
 Denmark,5797446.0
 Djibouti,958920.0
 Dominica,71625.0
@@ -77,14 +77,14 @@ Europe & Central Asia,918793590.0
 Europe & Central Asia (IDA & IBRD countries),459865205.0
 Europe & Central Asia (excluding high income),417797257.0
 European Union,513213363.0
-Faroe Islands,48497.0
+Faeroe Islands,48497.0
 Fiji,883483.0
 Finland,5518050.0
 Fragile and conflict affected situations,515215936.0
 France,66987244.0
 French Polynesia,236221.0
 Gabon,2119275.0
-"Gambia, The",2280102.0
+Gambia,2280102.0
 Georgia,3731000.0
 Germany,82927922.0
 Ghana,29767108.0
@@ -95,14 +95,14 @@ Grenada,111454.0
 Guadeloupe,395700.0
 Guam,165768.0
 Guatemala,17247807.0
-Guernsey,63026.0
+Channel Islands,63026.0
 Guinea,12414318.0
 Guinea-Bissau,1874309.0
 Guyana,779004.0
 Haiti,11123176.0
 Heavily indebted poor countries (HIPC),780234406.0
 High income,1210312147.0
-Holy See,800.0
+Vatican City,800.0
 Honduras,9587522.0
 "Hong Kong SAR, China",4929700.0
 Hungary,9768785.0
@@ -122,13 +122,13 @@ Israel,8883800.0
 Italy,60431283.0
 Jamaica,2934855.0
 Japan,126529100.0
-Jersey,106800.0
+Channel Islands,106800.0
 Jordan,9956011.0
 Kazakhstan,18276499.0
 Kenya,51393010.0
 Kiribati,115847.0
 "Korea, Dem. People���s Rep.",25549819.0
-"Korea, South",51635256.0
+South Korea,51635256.0
 Kosovo,1845300.0
 Kuwait,4137309.0
 Kyrgyz Republic,6315800.0
@@ -208,7 +208,7 @@ Romania,19473936.0
 Russia,144478050.0
 Rwanda,12301939.0
 Saint Lucia,181889.0
-Saint Vincent and the Grenadines,110210.0
+St. Vincent Grenadines,110210.0
 Samoa,196130.0
 San Marino,33785.0
 Sao Tome and Principe,211028.0
@@ -240,7 +240,7 @@ Suriname,358818.0
 Sweden,10183175.0
 Switzerland,8516543.0
 Syrian Arab Republic,16906283.0
-Taiwan*,23780452.0
+Taiwan,23780452.0
 Tajikistan,9100837.0
 Tanzania,56318348.0
 Thailand,69428524.0
@@ -253,11 +253,11 @@ Turkey,82319724.0
 Turkmenistan,5850908.0
 Turks and Caicos Islands,37665.0
 Tuvalu,11508.0
-US,327167434.0
+USA,327167434.0
 Uganda,42723139.0
 Ukraine,44622516.0
-United Arab Emirates,9630959.0
-United Kingdom,66488991.0
+UAE,9630959.0
+UK,66488991.0
 Upper middle income,2655635719.0
 Uruguay,3449299.0
 Uzbekistan,32955400.0
@@ -269,4 +269,4 @@ World,7594270356.0
 "Yemen, Rep.",28498687.0
 Zambia,17351822.0
 Zimbabwe,14439018.0
-occupied Palestinian territory,4569087.0
+Palestine,4569087.0
